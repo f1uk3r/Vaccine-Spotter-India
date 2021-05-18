@@ -1,14 +1,12 @@
-email:
-  sent_from : "<sender_email>" 
-  email_password : "<sender_password>"
-
-  # [edit] enter receiver email details
-  to : ["<receiver_email_id>"]
-
 area_info:
 # [edit] enter your district code or pincode
-  __district_code : "<district_code>" 
-  __pincode : "<pincode>"
+  __district_code : "512" 
+  __pincode : "301001"
   
 age_limit:
-  age_limit : [18, 45]
+  age_limit : 18
+
+telegram:
+  token: "1809792657:AAEwBIw22m159TUPm-hKldUofzabam0Wgqs"
+  channel_18: "JaipurVaxU45"
+  channel_45: "JaipurVaxU45"
