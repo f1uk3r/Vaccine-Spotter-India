@@ -1,6 +1,6 @@
 area_info:
 # [edit] enter your district code or pincode
-  __district_code : "512" 
+  __district_code : "506" 
   __pincode : "301001"
   
 age_limit:
@@ -8,5 +8,5 @@ age_limit:
 
 telegram:
   token: "1809792657:AAEwBIw22m159TUPm-hKldUofzabam0Wgqs"
-  channel_18: "JaipurVaxU45"
-  channel_45: "JaipurVaxU45"
+  channel_18: "Jai2VaxU45"
+  channel_45: "Jai2VaxA45"

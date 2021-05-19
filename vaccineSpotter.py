@@ -67,19 +67,36 @@ class vaccineSpotter:
 				if not self.session_id_dictionary.get(session['date']):
 					self.session_id_dictionary[session['date']] = []
 				if not any(session['session_id'] in session_id for session_id in self.session_id_dictionary[session['date']]):
-					logger.info(f'this particular session is not posted earlier {session["session_id"]} in {center["name"]}')
-					res = {
-						'name': center['name'],
-						'block_name':center['block_name'],
-						'age_limit':session['min_age_limit'],
-						'vaccine_type':session['vaccine'] ,
-						'date':session['date'],
-						'available_capacity':session['available_capacity']
-					}
-					if res['age_limit'] == 18:
+					if session['available_capacity'] > 0:
+						logger.info(f'this particular session is not posted earlier {session["session_id"]} in {center["name"]}')
+						if (center['fee_type'] == "Free"):
+							res = {
+								'name': center['name'],
+								'block_name':center['block_name'],
+								'vaccine_type':session['vaccine'] ,
+								'fee': 'Free',
+								'date':session['date'],
+								'available_capacity': session['available_capacity'],
+								'available_capacity_dose1': session['available_capacity_dose1'],
+								'available_capacity_dose2': session['available_capacity_dose2']
+							}
+						else:
+							res = {
+								'name': center['name'],
+								'block_name':center['block_name'],
+								'vaccine_type':session['vaccine'] ,
+								'fee': center['vaccine_fees']['fee'],
+								'date':session['date'],
+								'available_capacity': session['available_capacity'],
+								'available_capacity_dose1': session['available_capacity_dose1'],
+								'available_capacity_dose2': session['available_capacity_dose2']
+							}
+					else:
+						res = {}
+					if res.get('age_limit') == 18:
 						output_18.append(res)
 						self.session_id_dictionary[session['date']].append(session['session_id'])
-					else:
+					elif res.get('age_limit') == 45:
 						output_45.append(res)
 						self.session_id_dictionary[session['date']].append(session['session_id'])
 		return output_18, output_45
@@ -118,12 +135,12 @@ class vaccineSpotter:
 				print('\007')
 				result_str = ""
 				for center in output_18:
-					result_str = result_str + center['name'] + "\n"
-					result_str = result_str + "block:"+center['block_name'] + "\n"
-					result_str = result_str + "vaccine count:"+str(center['available_capacity']) + "\n"
-					result_str = result_str + "vaccine type:"+ center['vaccine_type'] + "\n"
-					result_str = result_str + center['date'] + "\n"
-					result_str = result_str + "age_limit:"+str(center['age_limit'])+"\n"
+					result_str = result_str + f"center['name'] ({center['date']})\n"
+					result_str = result_str + f"Block: {center['block_name']}\n"
+					result_str = result_str + f"Available vaccine: {center['available_capacity']} ({center['vaccine_type']})\n"
+					result_str = result_str + f"(Dose 1: {center['available_vaccine_dose1']}, Dose 2: {center['available_vaccine_dose2']})\n"
+					result_str = result_str + f"{center['vaccine_type']} ({center['fee']})\n"
+					result_str = result_str + "Schedule: https://selfregistration.cowin.gov.in\n"
 					result_str = result_str + "-----------------------------------------------------\n"
 				#print(result_str)
 				#self.send_email(result_str)
@@ -134,12 +151,12 @@ class vaccineSpotter:
 				print('\007')
 				result_str = ""
 				for center in output_45:
-					result_str = result_str + center['name'] + "\n"
-					result_str = result_str + "block:"+center['block_name'] + "\n"
-					result_str = result_str + "vaccine count:"+str(center['available_capacity']) + "\n"
-					result_str = result_str + "vaccine type:"+ center['vaccine_type'] + "\n"
-					result_str = result_str + center['date'] + "\n"
-					result_str = result_str + "age_limit:"+str(center['age_limit'])+"\n"
+					result_str = result_str + f"center['name'] ({center['date']})\n"
+					result_str = result_str + f"Block: {center['block_name']}\n"
+					result_str = result_str + f"Available vaccine: {center['available_capacity']} ({center['vaccine_type']})\n"
+					result_str = result_str + f"(Dose 1: {center['available_vaccine_dose1']}, Dose 2: {center['available_vaccine_dose2']})\n"
+					result_str = result_str + f"{center['vaccine_type']} ({center['fee']})\n"
+					result_str = result_str + "Schedule: https://selfregistration.cowin.gov.in\n"
 					result_str = result_str + "-----------------------------------------------------\n"
 				#print(result_str)
 				#self.send_email(result_str)
